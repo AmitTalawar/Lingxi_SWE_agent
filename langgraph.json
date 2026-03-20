@@ -1,0 +1,11 @@
+{
+  "dependencies": [
+    "."
+  ],
+  "graphs": {
+    "swebench_workflow": "./src/workflow/swebench_workflow.py:swebench_resolve_graph",
+    "issue_resolve_graph": "./src/workflow/supervisor_graph_demo.py:issue_resolve_graph",
+    "hierarchy_graph": "./src/workflow/hierarchy_graph_demo.py:hierarchy_graph"
+  },
+  "env": ".env"
+}
