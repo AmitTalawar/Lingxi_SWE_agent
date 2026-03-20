@@ -11,16 +11,16 @@ from langgraph.types import Command
 from langchain_core.messages import AIMessage, HumanMessage
 from typing_extensions import TypedDict
 
-from agent.llm import llm
-from agent.prompt import (
+from src.agent.llm import llm
+from src.prompts import (
     ISSUE_RESOLVE_REVIEWER_SYSTEM_PROMPT,
     ISSUE_RESOLVE_MAM_SYSTEM_PROMPT,
 )
-from agent.runtime_config import RuntimeConfig
-from agent.state import CustomState
-from agent.supervisor_graph_demo import issue_resolve_graph
-from agent.tool_set.context_tools import search_relevant_files
-from agent.tool_set.sepl_tools import view_file_content, view_directory, run_shell_cmd
+from src.runtime.runtime_config import RuntimeConfig
+from src.graph.state import CustomState
+from src.workflow.supervisor_graph_demo import issue_resolve_graph
+from src.tools.context_tools import search_relevant_files
+from src.tools.sepl_tools import view_file_content, view_directory, run_shell_cmd
 
 rc = RuntimeConfig()
 

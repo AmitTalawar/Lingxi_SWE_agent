@@ -15,19 +15,19 @@ from langgraph.types import Command, interrupt
 from langchain_core.messages import AIMessage, HumanMessage, RemoveMessage
 from typing_extensions import TypedDict
 
-from agent.llm import llm
-from agent.prompt import (
-    ISSUE_RESOLVE_PROBLEM_DECODER_SYSTEM_PROMPT,
-    ISSUE_RESOLVE_PROBLEM_SOLVER_SYSTEM_PROMPT,
-    ISSUE_RESOLVE_SOLUTION_MAPPER_SYSTEM_PROMPT,
+from src.agent.llm import llm
+from src.prompts import (
+    ISSUE_RESOLVE_ANALYSIS_AGENT_SYSTEM_PROMPT,
+    ISSUE_RESOLVE_FIXING_AGENT_SYSTEM_PROMPT,
+    ISSUE_RESOLVE_PLANNING_AGENT_SYSTEM_PROMPT,
     ISSUE_RESOLVE_SUPERVISOR_SYSTEM_PROMPT,
 )
-from agent.runtime_config import RuntimeConfig
-from agent.state import CustomState
-from agent.tool_set.context_tools import search_relevant_files, summarizer
-from agent.tool_set.edit_tool import str_replace_editor
-from agent.tool_set.sepl_tools import save_git_diff, view_file_content, view_directory
-from agent.utils import stage_message_processor
+from src.runtime.runtime_config import RuntimeConfig
+from src.graph.state import CustomState
+from src.tools.context_tools import search_relevant_files, summarizer
+from src.tools.edit_tool import str_replace_editor
+from src.tools.sepl_tools import save_git_diff, view_file_content, view_directory
+from src.utils.utils import stage_message_processor
 
 rc = RuntimeConfig()
 
@@ -181,7 +181,7 @@ def human_feedback_node(state: CustomState) -> Command[Literal[*members]]:
 problem_decoder_agent = create_react_agent(
     llm,
     tools=problem_decoder_tools,
-    prompt=ISSUE_RESOLVE_PROBLEM_DECODER_SYSTEM_PROMPT,
+    prompt=ISSUE_RESOLVE_ANALYSIS_AGENT_SYSTEM_PROMPT,
 )
 
 
@@ -202,7 +202,7 @@ def problem_decoder_node(state: CustomState) -> Command[Literal["supervisor"]]:
 solution_mapper_agent = create_react_agent(
     llm,
     tools=solution_mapper_tools,
-    prompt=ISSUE_RESOLVE_SOLUTION_MAPPER_SYSTEM_PROMPT,
+    prompt=ISSUE_RESOLVE_PLANNING_AGENT_SYSTEM_PROMPT,
 )
 
 
@@ -224,7 +224,7 @@ def solution_mapper_node(state: CustomState) -> Command[Literal["supervisor"]]:
 problem_solver_agent = create_react_agent(
     llm,
     tools=problem_solver_tools,
-    prompt=ISSUE_RESOLVE_PROBLEM_SOLVER_SYSTEM_PROMPT,
+    prompt=ISSUE_RESOLVE_FIXING_AGENT_SYSTEM_PROMPT,
 )
 
 
