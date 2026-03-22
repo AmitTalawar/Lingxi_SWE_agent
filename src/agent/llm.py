@@ -17,6 +17,9 @@ from src.runtime.runtime_config import load_env_config
 set_llm_cache(SQLiteCache(database_path=".langchain.db"))
 
 load_env_config()
+openai_api_key = os.getenv("OPENAI_API_KEY")
+openai_base_url = os.getenv("OPENAI_BASE_URL")
+
 
 
 def create_llm():
@@ -28,7 +31,8 @@ def create_llm():
     llm_name = os.getenv("LLM_MODEL")
     if "openai" in llm_provider.lower():
         created_llm = ChatOpenAI(
-            model=llm_name, temperature=0.0, max_tokens=2048, cache=True
+            model=llm_name, max_tokens=2048, cache=True,
+            api_key=openai_api_key, base_url=openai_base_url,
         )
     elif "anthropic" in llm_provider.lower():
         created_llm = ChatAnthropic(
